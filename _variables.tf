@@ -39,7 +39,37 @@ variable "multi_nat" {
 variable "newbits" {
   type        = number
   default     = 5
-  description = "Number of bits to add to the vpc cidr when building subnets"
+  description = "Number of bits to add to the vpc cidr when building subnets (applies to all tiers unless tier-specific values are set)"
+}
+
+variable "public_newbits" {
+  type        = number
+  default     = null
+  description = "Number of bits to add to the vpc cidr for public subnets (overrides 'newbits' if set)"
+}
+
+variable "private_newbits" {
+  type        = number
+  default     = null
+  description = "Number of bits to add to the vpc cidr for private subnets (overrides 'newbits' if set)"
+}
+
+variable "secure_newbits" {
+  type        = number
+  default     = null
+  description = "Number of bits to add to the vpc cidr for secure subnets (overrides 'newbits' if set)"
+}
+
+variable "transit_newbits" {
+  type        = number
+  default     = null
+  description = "Number of bits to add to the vpc cidr for transit subnets (overrides 'newbits' if set)"
+}
+
+variable "firewall_newbits" {
+  type        = number
+  default     = null
+  description = "Number of bits to add to the vpc cidr for firewall subnets (overrides 'newbits' if set)"
 }
 
 variable "vpc_cidr_summ" {
@@ -301,6 +331,13 @@ variable "db_subnet_group_secure_name_compat" {
 }
 
 locals {
+  # Compute effective newbits per tier (tier-specific overrides global)
+  public_newbits_effective   = coalesce(var.public_newbits, var.newbits)
+  private_newbits_effective  = coalesce(var.private_newbits, var.newbits)
+  secure_newbits_effective   = coalesce(var.secure_newbits, var.newbits)
+  transit_newbits_effective  = coalesce(var.transit_newbits, var.newbits)
+  firewall_newbits_effective = coalesce(var.firewall_newbits, var.newbits)
+
   kubernetes_clusters = zipmap(
     formatlist("kubernetes.io/cluster/%s", var.kubernetes_clusters),
     [for cluster in var.kubernetes_clusters : var.kubernetes_clusters_type]

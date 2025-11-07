@@ -3,7 +3,7 @@ resource "aws_subnet" "public" {
   vpc_id = aws_vpc.default.id
   cidr_block = cidrsubnet(
     aws_vpc.default.cidr_block,
-    var.newbits,
+    local.public_newbits_effective,
     count.index + var.public_netnum_offset,
   )
   availability_zone       = data.aws_availability_zones.available.names[count.index]
