@@ -331,6 +331,13 @@ variable "db_subnet_group_secure_name_compat" {
 }
 
 locals {
+  # Compute effective newbits per tier (tier-specific overrides global)
+  public_newbits_effective   = coalesce(var.public_newbits, var.newbits)
+  private_newbits_effective  = coalesce(var.private_newbits, var.newbits)
+  secure_newbits_effective   = coalesce(var.secure_newbits, var.newbits)
+  transit_newbits_effective  = coalesce(var.transit_newbits, var.newbits)
+  firewall_newbits_effective = coalesce(var.firewall_newbits, var.newbits)
+
   kubernetes_clusters = zipmap(
     formatlist("kubernetes.io/cluster/%s", var.kubernetes_clusters),
     [for cluster in var.kubernetes_clusters : var.kubernetes_clusters_type]
