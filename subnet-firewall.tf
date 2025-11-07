@@ -4,7 +4,7 @@ resource "aws_subnet" "firewall" {
 
   cidr_block = cidrsubnet(
     aws_vpc.default.cidr_block,
-    var.newbits,
+    local.firewall_newbits_effective,
     count.index + var.firewall_netnum_offset,
   )
 

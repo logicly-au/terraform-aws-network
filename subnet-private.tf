@@ -4,7 +4,7 @@ resource "aws_subnet" "private" {
 
   cidr_block = cidrsubnet(
     aws_vpc.default.cidr_block,
-    var.newbits,
+    local.private_newbits_effective,
     count.index + var.private_netnum_offset,
   )
 

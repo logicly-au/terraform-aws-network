@@ -39,7 +39,37 @@ variable "multi_nat" {
 variable "newbits" {
   type        = number
   default     = 5
-  description = "Number of bits to add to the vpc cidr when building subnets"
+  description = "Number of bits to add to the vpc cidr when building subnets (applies to all tiers unless tier-specific values are set)"
+}
+
+variable "public_newbits" {
+  type        = number
+  default     = null
+  description = "Number of bits to add to the vpc cidr for public subnets (overrides 'newbits' if set)"
+}
+
+variable "private_newbits" {
+  type        = number
+  default     = null
+  description = "Number of bits to add to the vpc cidr for private subnets (overrides 'newbits' if set)"
+}
+
+variable "secure_newbits" {
+  type        = number
+  default     = null
+  description = "Number of bits to add to the vpc cidr for secure subnets (overrides 'newbits' if set)"
+}
+
+variable "transit_newbits" {
+  type        = number
+  default     = null
+  description = "Number of bits to add to the vpc cidr for transit subnets (overrides 'newbits' if set)"
+}
+
+variable "firewall_newbits" {
+  type        = number
+  default     = null
+  description = "Number of bits to add to the vpc cidr for firewall subnets (overrides 'newbits' if set)"
 }
 
 variable "vpc_cidr_summ" {

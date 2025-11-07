@@ -43,6 +43,24 @@ module "network" {
 }
 ```
 
+### Per-Tier Subnet Sizing (Optional)
+
+For mixed subnet sizes, override `newbits` per tier:
+
+```hcl
+module "network" {
+  source   = "git::https://github.com/DNXLabs/terraform-aws-network.git"
+  
+  vpc_cidr = "10.39.32.0/21"
+  newbits  = 5  # Default /26
+  
+  # Override per tier
+  public_newbits  = 5  # /26 (62 IPs)
+  private_newbits = 3  # /24 (254 IPs)
+  secure_newbits  = 5  # /26 (62 IPs)
+}
+```
+
 <!--- BEGIN_TF_DOCS --->
 
 ## Requirements
